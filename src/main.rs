@@ -1,20 +1,39 @@
+/*
+ * This file is part of Stallman-Quest, a game about fighting against incredible odds.
+ * Copyright (C) 2015 Arne Dussin
+ *
+ * Stallman-Quest is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Stallman-Quest is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Stallman-Quest.  If not, see <http://www.gnu.org/licenses/>.
+ */
 extern crate sdl2;
 
 use sdl2::event::{Event};
 use sdl2::rect::{Rect};
 use sdl2::pixels::{Color};
 
+pub mod engine;
+
+use engine::window::{Window};
+use engine::context;
 
 fn main ()
 {
-    let mut context = sdl2::init().everything().unwrap();
-
-    let window = match context.window("Rust SDL", 800, 600).position_centered().opengl().build() {
+    let mut window = match Window::new("Rust rocks!", 800, 600) {
         Ok (window) => window,
         Err (err) => panic!("Unable to create window: {}", err)
     };
 
-    let mut renderer = match window.renderer().build() {
+    let mut renderer = match window.sdl_window.renderer().build() {
         Ok (renderer) => renderer,
         Err (err) => panic!("Unable to create renderer: {}", err)
     };
@@ -29,7 +48,7 @@ fn main ()
 
     let _ = drawer.present();
 
-    let mut events = context.event_pump();
+    let mut events = window.sdl_context.event_pump();
 
     loop
     {
