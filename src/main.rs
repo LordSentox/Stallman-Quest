@@ -1,44 +1,44 @@
-extern crate sfml;
+extern crate sdl2;
 
-use sfml::window::{ContextSettings, VideoMode, event, WindowStyle};
-use sfml::graphics::{RenderWindow, RenderTarget, Color, Text, Font};
+use sdl2::event::{Event};
+use sdl2::rect::{Rect};
+use sdl2::pixels::{Color};
+
 
 fn main ()
 {
-    let mut window =
-    match RenderWindow::new (VideoMode::new_init (800, 600, 32), "Rust-SFML", WindowStyle::Close, &ContextSettings::default()) {
-        Some (window) => window,
-        None => panic!("Cannot create a new RenderWindow!")
+    let mut context = sdl2::init().everything().unwrap();
+
+    let window = match context.window("Rust SDL", 800, 600).position_centered().opengl().build() {
+        Ok (window) => window,
+        Err (err) => panic!("Unable to create window: {}", err)
     };
 
-    let vegur = match Font::new_from_file ("Vegur-Regular.otf") {
-        Some (vegur) => vegur,
-        None => panic!("Cannot open 'Vegur-Regular.otf'")
+    let mut renderer = match window.renderer().build() {
+        Ok (renderer) => renderer,
+        Err (err) => panic!("Unable to create renderer: {}", err)
     };
 
-    let mut greeting = match Text::new () {
-        Some (greeting) => greeting,
-        None => panic!("Cannot create sfml-text")
-    };
+    let mut drawer = renderer.drawer();
+    let _ = drawer.set_draw_color (Color::RGB(15, 15, 15));
+    let _ = drawer.clear();
+    let _ = drawer.set_draw_color (Color::RGB(250, 250, 250));
 
-    greeting.set_string ("Hello World");
-    greeting.set_font (&vegur);
+    let inner_rect = Rect::new (10, 10, 300, 200);
+    let _ = drawer.fill_rect (inner_rect);
 
-    while window.is_open()
+    let _ = drawer.present();
+
+    let mut events = context.event_pump();
+
+    loop
     {
-        for event in window.events()
+        for event in events.poll_iter()
         {
-            match event
-            {
-                event::Closed => window.close(),
-                _ => {}
+            match event {
+                Event::Quit{..} => return,
+                _ => continue
             }
         }
-
-        window.clear (&Color::new_rgb (43, 37, 37));
-
-        window.draw (&greeting);
-
-        window.display();
-    }
+    };
 }
