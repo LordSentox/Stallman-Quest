@@ -1,0 +1,8 @@
+[package]
+name = "stallman_quest"
+version = "0.0.1"
+authors = ["Arne Dussin <arne.dussin@live.de>"]
+
+[dependencies.sfml]
+git = "https://github.com/jeremyletang/rust-sfml.git"
+rev = "277400b17e7dcf7825e9e652dceb058defa1dc8f"
