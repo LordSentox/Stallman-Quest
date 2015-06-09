@@ -16,9 +16,22 @@
  * along with Stallman-Quest.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// extern crate sdl2;
+extern crate sdl2;
+use sdl2::event::{Event};
 
-// use sdl2::{Sdl};
-// use sdl2::event::{Event};
+use engine::game::{Game};
 
-// pub static mut context: Sdl = sdl2::init().everything().unwrap();
+/// A class that implements this trait and is registered in the Sdl-Context, i.e. the instance of
+/// Game that is native to the Program by calling the method register() before(!) beginning the
+/// listening-process will be notified whenever an event occurs.
+pub trait InputHandler
+{
+	/// Registers the instance on the given game.
+	fn register (mut self, game: &mut Game)
+	{
+		// Fails in case the listening-process has already been started.
+		game.register_input_handler (self);
+	}
+
+	fn handle (&mut self, event: &Event);
+}

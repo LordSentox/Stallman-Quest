@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Stallman-Quest.  If not, see <http://www.gnu.org/licenses/>.
  */
-extern crate sdl2;
+ extern crate sdl2;
 
 use sdl2::event::{Event};
 use sdl2::rect::{Rect};
@@ -24,7 +24,7 @@ use sdl2::pixels::{Color};
 pub mod engine;
 
 use engine::window::{Window};
-use engine::context;
+use engine::game::{Game};
 
 fn main ()
 {

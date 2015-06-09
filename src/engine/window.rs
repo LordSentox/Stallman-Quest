@@ -15,13 +15,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Stallman-Quest.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 extern crate sdl2;
+
+use sdl2::{Sdl};
+use sdl2::pixels::{Color};
 
 pub struct Window
 {
-	pub sdl_window: sdl2::video::Window,
-	pub sdl_context: sdl2::Sdl
+	pub sdl_window: sdl2::video::Window
 }
 
 fn create_context () -> sdl2::Sdl
@@ -31,33 +32,32 @@ fn create_context () -> sdl2::Sdl
 
 impl Window {
 
-	pub fn new (title: &str, width: u32, height: u32) -> Result <Window, String>
+	pub fn new (context: &Sdl, title: &str, width: u32, height: u32) -> Result <Window, String>
 	{
-		let sdl_context = create_context();
-
-		let sdl_window = match sdl_context.window(title, width, height).opengl().build() {
+		let sdl_window = match context.window(title, width, height).opengl().build() {
 			Ok (sdl_window) => sdl_window,
 			Err (err) => return Err (err)
 		};
 
 		Ok (Window {
-			sdl_window: sdl_window,
-			sdl_context: sdl_context
+			sdl_window: sdl_window
 		})
 	}
 
-	pub fn new_fullscreen (title: &str) -> Result <Window, String>
+	pub fn new_fullscreen (context: &Sdl, title: &str) -> Result <Window, String>
 	{
-		let sdl_context = create_context();
-
-		let sdl_window = match sdl_context.window(title, 0, 0).opengl().fullscreen_desktop().build() {
+		let sdl_window = match context.window(title, 0, 0).opengl().fullscreen_desktop().build() {
 			Ok (sdl_window) => sdl_window,
 			Err (err) => return Err (err)
 		};
 
 		Ok (Window {
-			sdl_window: sdl_window,
-			sdl_context: sdl_context
+			sdl_window: sdl_window
 		})
+	}
+
+	pub fn clear (&self, color: Color)
+	{
+
 	}
 }
