@@ -28,12 +28,12 @@ use engine::game::{Game};
 
 fn main ()
 {
-    let mut window = match Window::new("Rust rocks!", 800, 600) {
-        Ok (window) => window,
-        Err (err) => panic!("Unable to create window: {}", err)
+    let mut game = match Game::new("Stallman-Quest", 800, 600) {
+        Ok (game) => game,
+        Err (err) => panic!("Unable to create game instance: {}", err)
     };
 
-    let mut renderer = match window.sdl_window.renderer().build() {
+    let mut renderer = match game.window().sdl_window.renderer().build() {
         Ok (renderer) => renderer,
         Err (err) => panic!("Unable to create renderer: {}", err)
     };
@@ -48,7 +48,7 @@ fn main ()
 
     let _ = drawer.present();
 
-    let mut events = window.sdl_context.event_pump();
+    let mut events = game.window().sdl_context.event_pump();
 
     loop
     {

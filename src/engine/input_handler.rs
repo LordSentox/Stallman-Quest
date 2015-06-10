@@ -26,12 +26,5 @@ use engine::game::{Game};
 /// listening-process will be notified whenever an event occurs.
 pub trait InputHandler
 {
-	/// Registers the instance on the given game.
-	fn register (mut self, game: &mut Game)
-	{
-		// Fails in case the listening-process has already been started.
-		game.register_input_handler (self);
-	}
-
 	fn handle (&mut self, event: &Event);
 }

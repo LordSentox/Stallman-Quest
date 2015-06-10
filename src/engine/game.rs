@@ -29,9 +29,7 @@ pub struct Game
     window: Window,
     sdl_context: Sdl,
 
-    // XXX: Is it possible to somehow create a Vector, but with a required Sized type you still can
-    // overload or similar?
-    input_handlers: Vec <InputHandler>,
+    input_handlers: Vec <Box<InputHandler>>,
     locked: bool
 }
 
@@ -39,19 +37,18 @@ impl Game {
 
     pub fn new (name: &str, width: u32, height: u32) -> Result <Game, String>
     {
-        let this = Game {
-            sdl_context: sdl2::init().everything().unwrap(),
-
-            input_handlers: vec![],
-            locked: false
-        };
-
-        this.window = match Window::new (this, name, width, height) {
+        let sdl_context = sdl2::init().everything().unwrap();
+        let window = match Window::new (&sdl_context, name, width, height) {
             Ok (window) => window,
             Err (err) => return Err (err)
         };
 
-        Ok (this)
+        Ok (Game {
+            window: window,
+            sdl_context: sdl_context,
+            input_handlers: Vec::new(),
+            locked: false
+        })
     }
 
     pub fn window (&self) -> &Window {
@@ -61,10 +58,12 @@ impl Game {
     ///
     // TODO: It might be nice to make it possible to still register an event-handler while the loop
     // is running, which requires more sophisticated mechanisms concerning thread-safety.
-    pub fn register_input_handler (&mut self, mut input_handler: InputHandler)
+    pub fn register_input_handler <T: InputHandler> (self, mut input_handler: T)
     {
         assert!(self.locked == false);
 
-        self.input_handlers.push (input_handler);
+        // XXX: How can I make vector take ownership of this element?
+        let new = Box::new (input_handler);
+        self.input_handlers.push (new);
     }
 }
