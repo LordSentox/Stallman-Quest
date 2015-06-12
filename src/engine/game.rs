@@ -24,6 +24,8 @@ use sdl2::event::{EventPump, Event};
 use engine::window::{Window};
 use engine::input_handler::{InputHandler};
 
+use std::{thread};
+
 pub struct Game
 {
     window: Window,
@@ -51,19 +53,31 @@ impl Game {
         })
     }
 
+    /// For now, every Game-Instance has exactly one Window-Instance, which can be received using
+    /// this function.
     pub fn window (&self) -> &Window {
         &self.window
     }
 
-    ///
+    /// Register a struct that implements the InputHandler-Trait. Whenever input is received, the
+    /// handle()-function will be called, which can be used to process any input.
+    /// Note that the function will be called from a different thread.
     // TODO: It might be nice to make it possible to still register an event-handler while the loop
     // is running, which requires more sophisticated mechanisms concerning thread-safety.
-    pub fn register_input_handler <T: InputHandler> (self, mut input_handler: T)
+    pub fn register_input_handler (&mut self, mut input_handler: Box<InputHandler>)
     {
         assert!(self.locked == false);
 
-        // XXX: How can I make vector take ownership of this element?
-        let new = Box::new (input_handler);
-        self.input_handlers.push (new);
+        self.input_handlers.push (input_handler);
+    }
+
+    /// This will start an asynchronous listening process, which will call the handle-function of
+    /// of all registered InputHandlers. After calling this, it will be impossible to add any
+    /// additional InputHandlers.
+    pub fn begin_listen (&mut self) -> bool
+    {
+        self.locked = true;
+
+        // TODO: Actually spawn a thread and begin to listen here.
     }
 }

@@ -26,5 +26,7 @@ use engine::game::{Game};
 /// listening-process will be notified whenever an event occurs.
 pub trait InputHandler
 {
+	fn register (mut self, mut game: Game);
+
 	fn handle (&mut self, event: &Event);
 }
