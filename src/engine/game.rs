@@ -79,5 +79,11 @@ impl Game {
         self.locked = true;
 
         // TODO: Actually spawn a thread and begin to listen here.
+
+    }
+
+    // TODO: Remove this, since the sdl_context should not be directly accessible.
+    pub fn context (&mut self) -> &mut Sdl {
+        &mut self.sdl_context
     }
 }

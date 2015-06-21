@@ -33,6 +33,7 @@ fn main ()
         Err (err) => panic!("Unable to create game instance: {}", err)
     };
 
+    /*
     let mut renderer = match game.window().sdl_window.renderer().build() {
         Ok (renderer) => renderer,
         Err (err) => panic!("Unable to create renderer: {}", err)
@@ -47,8 +48,9 @@ fn main ()
     let _ = drawer.fill_rect (inner_rect);
 
     let _ = drawer.present();
+    */
 
-    let mut events = game.window().sdl_context.event_pump();
+    let mut events = game.context().event_pump();
 
     loop
     {

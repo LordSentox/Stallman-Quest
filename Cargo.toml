@@ -3,5 +3,9 @@ name = "stallman_quest"
 version = "0.0.1"
 authors = ["Arne Dussin <arne.dussin@live.de>"]
 
+# svg = "0.1.1"
+# [dependencies]
+# png = "0.1.0"
+
 [dependencies.sdl2]
 git = "https://github.com/AngryLawyer/rust-sdl2"
