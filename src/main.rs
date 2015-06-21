@@ -18,13 +18,10 @@
  extern crate sdl2;
 
 use sdl2::event::{Event};
-use sdl2::rect::{Rect};
-use sdl2::pixels::{Color};
 
 pub mod engine;
 
-use engine::window::{Window};
-use engine::game::{Game};
+use engine::{Game, Window};
 
 fn main ()
 {
@@ -52,10 +49,8 @@ fn main ()
 
     let mut events = game.context().event_pump();
 
-    loop
-    {
-        for event in events.poll_iter()
-        {
+    loop {
+        for event in events.poll_iter() {
             match event {
                 Event::Quit{..} => return,
                 _ => continue

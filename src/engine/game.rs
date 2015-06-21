@@ -16,24 +16,14 @@
  * along with Stallman-Quest.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use engine::{Game, Window, InputHandler};
+
 extern crate sdl2;
 
-use sdl2::{Sdl};
+use sdl2::Sdl;
 use sdl2::event::{EventPump, Event};
 
-use engine::window::{Window};
-use engine::input_handler::{InputHandler};
-
-use std::{thread};
-
-pub struct Game
-{
-    window: Window,
-    sdl_context: Sdl,
-
-    input_handlers: Vec <Box<InputHandler>>,
-    locked: bool
-}
+use std::thread;
 
 impl Game {
 
@@ -79,7 +69,7 @@ impl Game {
         self.locked = true;
 
         // TODO: Actually spawn a thread and begin to listen here.
-
+        false
     }
 
     // TODO: Remove this, since the sdl_context should not be directly accessible.

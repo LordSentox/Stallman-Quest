@@ -15,15 +15,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Stallman-Quest.  If not, see <http://www.gnu.org/licenses/>.
  */
+use engine::Window;
+
 extern crate sdl2;
 
-use sdl2::{Sdl};
-use sdl2::pixels::{Color};
-
-pub struct Window
-{
-	pub sdl_window: sdl2::video::Window
-}
+use sdl2::Sdl;
+use sdl2::pixels::Color;
 
 fn create_context () -> sdl2::Sdl
 {
